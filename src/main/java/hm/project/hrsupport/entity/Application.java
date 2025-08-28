@@ -33,4 +33,5 @@ public class Application extends AuditModel<String> {
     @ManyToOne
     @JoinColumn(name = "recruitmentId")
     private Recruitment recruitment;
+    
 }

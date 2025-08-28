@@ -6,6 +6,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import hm.project.hrsupport.enums.RecruitmentStatusEnum;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 @Data
@@ -21,9 +23,10 @@ public class RecruitmentDTO {
     private Date postedDate;
     private Date closingDate;
 
+    @Enumerated(EnumType.STRING)
     private RecruitmentStatusEnum status;
 
-    private Integer NumberOfVacancy;
+    private Integer numberOfVacancy;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private List<Long> applicationIds;
