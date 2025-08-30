@@ -40,7 +40,7 @@ public class DeptController {
     @PostMapping
     public ResponseEntity<DeptDTO> creatDepartment(@RequestBody DeptDTO deptDTO) {
         DeptDTO department = deptService.creatDepartment(deptDTO);
-        return new ResponseEntity<>(department, HttpStatus.OK);
+        return new ResponseEntity<>(department, HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
     public ResponseEntity<DeptDTO> editDepartment(@PathVariable Long id, @RequestBody DeptDTO deptDTO){

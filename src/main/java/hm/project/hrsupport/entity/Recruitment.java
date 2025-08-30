@@ -1,10 +1,8 @@
 package hm.project.hrsupport.entity;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import hm.project.hrsupport.enums.RecruitmentStatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,22 +16,16 @@ public class Recruitment extends AuditModel<String> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String JobTitle;
-    private String JobDescription;
-    private String department;
-
+    private String remarks;
+    
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date postedDate;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date closingDate;
+    private LocalDate interviewDate;
 
     @Enumerated(EnumType.STRING)
     private RecruitmentStatusEnum status;
 
-    private Integer NumberOfVacancy;
+    @OneToOne
+    @JoinColumn(name = "applicationId", nullable = false)
+    private Application application;
 
-    // reverse r/ship
-    @OneToMany(mappedBy = "recruitment" )
-    private List<Application> application;
 }

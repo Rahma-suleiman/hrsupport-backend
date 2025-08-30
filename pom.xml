@@ -54,7 +54,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-				<!-- http://localhost:8080/swagger-ui/index.html -->
+				<!-- http://localhost:8088/swagger-ui/index.html -->
 	<dependency>
   		<groupId>org.springdoc</groupId>
   		<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>

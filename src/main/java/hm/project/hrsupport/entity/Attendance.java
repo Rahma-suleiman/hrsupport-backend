@@ -3,6 +3,8 @@ package hm.project.hrsupport.entity;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import hm.project.hrsupport.enums.AttendanceStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,7 +22,10 @@ public class Attendance extends AuditModel<String> {
 
     private LocalDate date;
 
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime checkInTime;
+    
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime checkOutTime;
 
     @Enumerated(EnumType.STRING) // Store enum as a as text/readable string in DB

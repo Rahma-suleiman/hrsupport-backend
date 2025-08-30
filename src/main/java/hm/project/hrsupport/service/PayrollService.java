@@ -15,7 +15,7 @@ import hm.project.hrsupport.repository.PayrollRepository;
 import lombok.AllArgsConstructor;
 
 @Service
-@AllArgsConstructor 
+@AllArgsConstructor
 public class PayrollService {
 
     private final PayrollRepository payrollRepository;
@@ -25,7 +25,14 @@ public class PayrollService {
     public List<PayrollDTO> getAllPayroll() {
         List<Payroll> payroll = payrollRepository.findAll();
         return payroll.stream()
-                .map(pay -> modelMapper.map(payroll, PayrollDTO.class))
+                .map(pay -> {
+                    PayrollDTO payDto = modelMapper.map(pay, PayrollDTO.class);
+                    // If your PayrollDTO has employeeId but your Payroll entity has an Employee
+                    // object, ModelMapper won’t automatically map employee.id(i.e obj) to employeeId.
+                    payDto.setEmployeeId(pay.getEmployee().getId());
+                    return payDto;
+                })
+
                 .collect(Collectors.toList());
     }
 
@@ -33,14 +40,15 @@ public class PayrollService {
 
         Payroll payroll = modelMapper.map(payrollDTO, Payroll.class);
         Employee employee = empRepository.findById(payrollDTO.getEmployeeId())
-                .orElseThrow(() -> new ApiRequestException("Cannot get payroll for employee id " + payrollDTO.getEmployeeId()));
+                .orElseThrow(() -> new ApiRequestException(
+                        "Cannot get payroll for employee id " + payrollDTO.getEmployeeId()));
 
         payroll.setEmployee(employee);
         // Net Salary=Salary+Bonus−Deductions
         int netSalary = employee.getSalary()
                 + (payrollDTO.getBonus() != null ? payrollDTO.getBonus() : 0)
                 - (payrollDTO.getDeduction() != null ? payrollDTO.getDeduction() : 0);
-    
+
         payroll.setNetSalary(netSalary);
 
         payroll.setSalary(employee.getSalary());
@@ -58,6 +66,20 @@ public class PayrollService {
         payrollRepository.deleteById(id);
     }
 
-   
-
 }
+// {
+// "year": 2025,
+// "month": 8,
+// "bonus": 500,
+// "deduction": 0,
+// "paymentStatus": "PAID",
+// "employeeId": 1
+// }
+// {
+// "year": 2025,
+// "month": 7,
+// "bonus": 0,
+// "deduction": 200,
+// "paymentStatus": "UNPAID",
+// "employeeId": 2
+// }

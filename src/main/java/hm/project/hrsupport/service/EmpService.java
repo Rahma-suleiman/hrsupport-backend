@@ -1,6 +1,7 @@
 package hm.project.hrsupport.service;
 
 import java.util.stream.Collectors;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -83,6 +84,8 @@ public class EmpService {
                                 .orElseThrow(() -> new ApiRequestException("Department not found"));
                 employee.setDepartment(department);
 
+                employee.setHireDate(LocalDate.now());
+
                 Employee savedEmployee = empRepository.save(employee);
 
                 EmpDTO empResponse = modelMapper.map(savedEmployee, EmpDTO.class);
@@ -90,11 +93,11 @@ public class EmpService {
                 empResponse.setManagerId(
                                 savedEmployee.getManager() != null ? savedEmployee.getManager().getId() : null);
 
-                empResponse.setSubordinateIds(savedEmployee.getSubordinates() != null
-                                ? savedEmployee.getSubordinates().stream()
-                                                .map(sub -> modelMapper.map(sub, EmpDTO.class).getId())
-                                                .collect(Collectors.toList())
-                                : null);
+                // empResponse.setSubordinateIds(savedEmployee.getSubordinates() != null
+                //                 ? savedEmployee.getSubordinates().stream()
+                //                                 .map(sub -> modelMapper.map(sub, EmpDTO.class).getId())
+                //                                 .collect(Collectors.toList())
+                //                 : null);
 
                 empResponse.setDepartmentId(savedEmployee.getDepartment() != null
                                                 ? savedEmployee.getDepartment().getId()

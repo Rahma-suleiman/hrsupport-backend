@@ -12,7 +12,7 @@ public class EmpDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
-
+    
     private String firstName;
     private String lastName;
     private String email;
@@ -20,6 +20,8 @@ public class EmpDTO {
     private String address;
     private String gender;
     private LocalDate dob;
+
+    // @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDate hireDate;
     private String position; 
     private Integer salary;

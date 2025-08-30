@@ -1,7 +1,6 @@
 package hm.project.hrsupport.dto;
 
 import java.util.Date;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,6 +22,6 @@ public class ApplicationDTO {
     private Date applicationDate;
 
     private ApplicationStatusEnum status;
-
-    private List<Long> recruitmentId;
+    // fk
+    private Long jobPostingId;
 }

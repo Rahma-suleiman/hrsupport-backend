@@ -49,7 +49,7 @@ public class ApplicationController {
         ApplicationDTO updateApp = applicationService.editApplication(id, applicationDTO);
         return ResponseEntity.ok(updateApp);
     }
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteApplication(@PathVariable Long id) {
         applicationService.deleteApplication(id);
         return ResponseEntity.noContent().build();

@@ -23,7 +23,10 @@ public class AttendDTO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime checkInTime;
+
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime checkOutTime;
 
     private AttendanceStatusEnum status;
@@ -32,7 +35,6 @@ public class AttendDTO {
     private Long employeeId;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonFormat(pattern = "HH:mm")
     public LocalTime getCheckInTime() {
         if (status == AttendanceStatusEnum.ABSENT || status == AttendanceStatusEnum.ON_LEAVE) {
             return null; 
@@ -41,7 +43,6 @@ public class AttendDTO {
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonFormat(pattern = "HH:mm")
     public LocalTime getCheckOutTime() {
         if (status == AttendanceStatusEnum.ABSENT || status == AttendanceStatusEnum.ON_LEAVE) {
             return null;

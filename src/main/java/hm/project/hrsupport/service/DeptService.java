@@ -1,6 +1,7 @@
 package hm.project.hrsupport.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,12 @@ public class DeptService {
 
     public DeptDTO creatDepartment(DeptDTO deptDTO) {
         Department department = modelMapper.map(deptDTO, Department.class);
+        // check if department exists by name
+        Optional<Department> isDeptExist = deptRepository.findByName(deptDTO.getName());
+        if (isDeptExist.isPresent()) {
+            // throw new ApiRequestException("department exist");
+             throw new ApiRequestException("Department with name " + deptDTO.getName() + " already exists");
+        }
         Department saveDept = deptRepository.save(department);
         return modelMapper.map(saveDept, DeptDTO.class);
     }

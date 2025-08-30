@@ -31,7 +31,7 @@ public class Application extends AuditModel<String> {
     private ApplicationStatusEnum status;
     
     @ManyToOne
-    @JoinColumn(name = "recruitmentId")
-    private Recruitment recruitment;
+    @JoinColumn(name = "jobPostingId")
+    private JobPosting jobPosting;
     
 }
