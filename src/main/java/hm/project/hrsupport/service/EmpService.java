@@ -29,23 +29,44 @@ public class EmpService {
 
 
 
+        // public List<EmpDTO> getAllEmployee() {
+        //         List<Employee> employees = empRepository.findAll();
+        //         return employees.stream()
+        //                         .map(emp -> {
+        //                                 EmpDTO empDto = modelMapper.map(emp, EmpDTO.class);
+
+        //                                 empDto.setManagerId(emp.getManager() != null ? emp.getManager().getId() : null);
+        //                                 empDto.setSubordinateIds(emp.getSubordinates() != null
+        //                                                 ? emp.getSubordinates().stream()
+        //                                                                 .map(sub -> sub.getId()) // just ids instead of full mapping
+        //                                                                 .collect(Collectors.toList())
+        //                                                 : null);
+        //                                 empDto.setDepartmentId(emp.getDepartment().getId());
+
+        //                                 empDto.setWrittenReviewIds(emp.getWrittenReviews() != null
+        //                                         ? emp.getWrittenReviews().stream()
+        //                                                 .map(rev-> rev.getId())
+        //                                                 // .map(rev-> modelMapper.map(rev, PerformReviewDTO.class))
+        //                                                 .collect(Collectors.toList())
+        //                                         : null );
+        //                                 empDto.setReceivedReviewIds(emp.getReceivedReviews() != null
+        //                                         ? emp.getReceivedReviews().stream()
+        //                                                 .map(rev-> rev.getId())
+        //                                                 // .map(rev-> modelMapper.map(rev, PerformReviewDTO.class))
+        //                                                 .collect(Collectors.toList())
+        //                                         : null );
+        //                                 return empDto;
+        //                         }).collect(Collectors.toList());
+        // }
+
         public List<EmpDTO> getAllEmployee() {
                 List<Employee> employees = empRepository.findAll();
                 return employees.stream()
                                 .map(emp -> {
                                         EmpDTO empDto = modelMapper.map(emp, EmpDTO.class);
-
-                                        empDto.setManagerId(emp.getManager() != null ? emp.getManager().getId() : null);
-                                        empDto.setSubordinateIds(emp.getSubordinates() != null
-                                                        ? emp.getSubordinates().stream()
-                                                                        .map(sub -> sub.getId()) // just ids instead of full mapping
-                                                                        .collect(Collectors.toList())
-                                                        : null);
-                                        empDto.setDepartmentId(emp.getDepartment().getId());
                                         return empDto;
                                 }).collect(Collectors.toList());
         }
-
 
         public EmpDTO getEmployeeById(Long id) {
                 Employee emp = empRepository.findById(id)
@@ -92,12 +113,6 @@ public class EmpService {
 
                 empResponse.setManagerId(
                                 savedEmployee.getManager() != null ? savedEmployee.getManager().getId() : null);
-
-                // empResponse.setSubordinateIds(savedEmployee.getSubordinates() != null
-                //                 ? savedEmployee.getSubordinates().stream()
-                //                                 .map(sub -> modelMapper.map(sub, EmpDTO.class).getId())
-                //                                 .collect(Collectors.toList())
-                //                 : null);
 
                 empResponse.setDepartmentId(savedEmployee.getDepartment() != null
                                                 ? savedEmployee.getDepartment().getId()

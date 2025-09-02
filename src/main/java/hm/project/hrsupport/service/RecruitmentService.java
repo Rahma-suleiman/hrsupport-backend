@@ -93,24 +93,16 @@ public class RecruitmentService {
     }
 
 }
+
 // {
-// "department": "Human Resources",
-// "postedDate": "2025-08-28",
-// "closingDate": "2025-09-15",
-// "status": "OPEN",
-// "numberOfVacancy": 3,
-// "jobTitle": "HR Assistant",
-// "jobDescription": "Responsible for supporting recruitment, onboarding, and
-// employee welfare activities. The candidate should have good communication and
-// organizational skills."
+//   "remarks": "Candidate impressed panel, offer accepted",
+//   "interviewDate": "2025-09-10",
+//   "status": "HIRED",
+//   "applicationId": 3
 // }
 // {
-// "department": "Information Technology",
-// "postedDate": "2025-08-20T08:30:00Z",
-// "closingDate": "2025-09-10T17:00:00Z",
-// "status": "OPEN",
-// "numberOfVacancy": 2,
-// "jobTitle": "Software Engineer",
-// "jobDescription": "Develop and maintain web applications using Java Spring
-// Boot and React. Experience with PostgreSQL is an added advantage."
+//   "remarks": "Excellent communication and technical skills, hired for senior role",
+//   "interviewDate": "2025-09-12",
+//   "status": "HIRED",
+//   "applicationId": 4
 // }

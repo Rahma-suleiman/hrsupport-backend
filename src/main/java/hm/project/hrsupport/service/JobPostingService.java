@@ -68,8 +68,7 @@ public class JobPostingService {
 // "closingDate": "2025-09-10",
 // "status": "OPEN",
 // "departmentId": 2,
-// "jobDescription": "Responsible for designing, developing, and maintaining
-// software applications.",
+// "jobDescription": "Responsible for designing, developing, and maintaining software applications.",
 // "numberOfVacancy": 3
 // }
 // {

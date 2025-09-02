@@ -38,10 +38,12 @@ public class EmpDTO {
     
     // Reviews received
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<PerformReviewDTO> receivedReviews;
+    private List<Long> receivedReviewIds;
+    // private List<PerformReviewDTO> receivedReviews;
     
     // Reviews written
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<PerformReviewDTO> writtenReviews;
+    private List<Long> writtenReviewIds;
+    // private List<PerformReviewDTO> writtenReviews;
 
 }

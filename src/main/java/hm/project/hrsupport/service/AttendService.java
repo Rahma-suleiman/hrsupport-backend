@@ -84,6 +84,6 @@ public class AttendService {
 //     "date": "2025-08-19",
 //     "checkInTime": "08:30",
 //     "checkOutTime": "17:00",
-//     "status": "PRESENT",
+//     "status": "ABSENT",
 //     "employeeId": 1
 // }
