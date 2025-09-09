@@ -45,5 +45,7 @@ public class EmpDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private List<Long> writtenReviewIds;
     // private List<PerformReviewDTO> writtenReviews;
-
+    
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long recruitmentId; // Only present if employee came from recruitment
 }

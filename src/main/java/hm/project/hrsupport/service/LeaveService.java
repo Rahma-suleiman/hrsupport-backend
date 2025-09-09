@@ -45,17 +45,20 @@ public class LeaveService {
     }
 
     public LeaveRequestDTO editLeave(Long id, LeaveRequestDTO leaveRequestDTO) {
+
         LeaveRequest existingLeave = leaveRepository.findById(id)
                 .orElseThrow(() -> new ApiRequestException("Leave not found with id" + id));
             
         modelMapper.map(leaveRequestDTO, existingLeave);
 
-        existingLeave.setId(id);
-        // leaveRequestDTO.setId(existingLeave.getId());
+        // existingLeave.setId(id);
+        leaveRequestDTO.setId(existingLeave.getId());
 
-        Employee employee = empRepository.findById(leaveRequestDTO.getEmployeeId())
-                .orElseThrow(() -> new ApiRequestException("Employee not found with id" + leaveRequestDTO.getEmployeeId()));
-        existingLeave.setEmployee(employee);
+        if (leaveRequestDTO.getEmployeeId() != null) {
+            Employee employee = empRepository.findById(leaveRequestDTO.getEmployeeId())
+                    .orElseThrow(() -> new ApiRequestException("Employee not found with id" + leaveRequestDTO.getEmployeeId()));
+            existingLeave.setEmployee(employee);            
+        }
 
         LeaveRequest savedLeave = leaveRepository.save(existingLeave);
         return modelMapper.map(savedLeave, LeaveRequestDTO.class);
@@ -68,10 +71,19 @@ public class LeaveService {
     }
 }
 // {
-// "leaveType": "VACATION",
+// "leaveType": "SICK",
 // "status": "APPROVED",
 // "startDate": "2025-09-03T08:30:00.000Z",
 // "endDate": "2025-09-05T17:00:00.000Z",
 // "reason": "Flu and doctor's advice to rest",
 // "employeeId": 1
 // }
+// {
+//   "leaveType": "VACATION",
+//   "status": "APPROVED",
+//   "startDate": "2025-12-20T09:00:00.000Z",
+//   "endDate": "2025-12-27T17:00:00.000Z",
+//   "reason": "Family vacation",
+//   "employeeId": 2
+// }
+

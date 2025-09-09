@@ -45,17 +45,12 @@ public class EmpController {
         EmpDTO emp = empService.createEmployee(empDTO);
         return new ResponseEntity<>(emp, HttpStatus.CREATED);
     }
-    @PutMapping("path/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<EmpDTO> editEmployee(@PathVariable Long id, @RequestBody EmpDTO empDTO) {
         EmpDTO emp = empService.editEmployee(id, empDTO);
         return new ResponseEntity<>(emp,HttpStatus.OK);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmployeeById(@PathVariable Long id){
-        empService.deleteEmployeeById(id);
-        return ResponseEntity.noContent().build();
-    }
-      // Employee sees their own reviews
+    // Employee sees their own reviews
     @GetMapping("/{id}/reviews/received")
     public ResponseEntity<List<PerformReviewDTO>> getMyReviews(@PathVariable Long id) {
         List<PerformReviewDTO> myReview = empService.getMyReviews(id);
@@ -67,7 +62,24 @@ public class EmpController {
         List<PerformReviewDTO> myReview = empService.getReviewsWrittenByMe(id);
         return ResponseEntity.ok(myReview);
     }
-    
+    //soft delete/ deactivate
+    @DeleteMapping("/{id}/deactivate")
+    public ResponseEntity<String> deactivateEmployee(@PathVariable Long id){
+        empService.deactivateEmployee(id);
+        return ResponseEntity.ok("Employee deactivated successfully");
+    }
+    //Reactivate Employee
+    @PutMapping("/{id}/activate")
+    public ResponseEntity<String> activateEmployee(@PathVariable Long id){
+        empService.activateEmployee(id);
+        return ResponseEntity.ok("Employee reactivated successfully");
+    }
+    //HARD/Permanent DELETE though not advisable
+    @DeleteMapping("/{id}/permanent")
+    public ResponseEntity<String> deleteEmployeeById(@PathVariable Long id) {
+        empService.deleteEmployeeById(id);
+        return ResponseEntity.ok("Employee and related data permanently deleted");
+    }
     
 }
 

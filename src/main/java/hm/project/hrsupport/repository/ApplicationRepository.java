@@ -10,6 +10,7 @@ import hm.project.hrsupport.entity.Application;
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, Long>{
 
-    Optional<Application> findByApplicantName(String applicantName);
+
+    Optional<Application> findByFirstNameAndLastNameAndEmail(String firstName, String lastName, String email);
     
 }

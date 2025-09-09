@@ -40,10 +40,11 @@ public class PayrollService {
 
         Payroll payroll = modelMapper.map(payrollDTO, Payroll.class);
         Employee employee = empRepository.findById(payrollDTO.getEmployeeId())
-                .orElseThrow(() -> new ApiRequestException(
-                        "Cannot get payroll for employee id " + payrollDTO.getEmployeeId()));
+                .orElseThrow(() -> new ApiRequestException("Cannot get payroll for employee id " + payrollDTO.getEmployeeId()));
 
         payroll.setEmployee(employee);
+
+        payroll.setSalary(employee.getSalary());
         // Net Salary=Salary+Bonus−Deductions
         int netSalary = employee.getSalary()
                 + (payrollDTO.getBonus() != null ? payrollDTO.getBonus() : 0)
@@ -51,14 +52,13 @@ public class PayrollService {
 
         payroll.setNetSalary(netSalary);
 
-        payroll.setSalary(employee.getSalary());
-
         Payroll savedPayroll = payrollRepository.save(payroll);
 
         PayrollDTO payrollDtoResponse = modelMapper.map(savedPayroll, PayrollDTO.class);
 
+        // Ensure read-only fields are returned
         payrollDtoResponse.setSalary(savedPayroll.getSalary());
-
+        payrollDtoResponse.setNetSalary(savedPayroll.getNetSalary());
         return payrollDtoResponse;
     }
 

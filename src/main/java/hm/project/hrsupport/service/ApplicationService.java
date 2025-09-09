@@ -1,5 +1,6 @@
 package hm.project.hrsupport.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,9 +28,9 @@ public class ApplicationService {
 
         Application application = modelMapper.map(applicationDTO, Application.class);
 
-        Optional<Application> applicantExist = applicationRepository.findByApplicantName(applicationDTO.getApplicantName());
+        Optional<Application> applicantExist = applicationRepository.findByFirstNameAndLastNameAndEmail(applicationDTO.getFirstName(), applicationDTO.getLastName(), applicationDTO.getEmail());
         if (applicantExist.isPresent()) {
-            throw new ApiRequestException("applicant with id " + applicationDTO.getApplicantName() + " already applied");
+            throw new ApiRequestException("applicant with name " + applicationDTO.getFirstName() + " " + applicationDTO.getLastName() + " and email "+ applicationDTO.getEmail() + " already applied");
         }
 
         if (applicationDTO.getJobPostingId() != null) {
@@ -38,7 +39,7 @@ public class ApplicationService {
             application.setJobPosting(jobPost);
             ;
         }
-
+        application.setApplicationDate(LocalDateTime.now());
         Application savedApplication = applicationRepository.save(application);
 
         ApplicationDTO appDtoResponse = modelMapper.map(savedApplication, ApplicationDTO.class);
@@ -49,7 +50,7 @@ public class ApplicationService {
 
     public ApplicationDTO getApplicationById(Long id) {
         Application app = applicationRepository.findById(id)
-                .orElseThrow(() -> new ApiRequestException("application not found with id" + id));
+                .orElseThrow(() -> new ApiRequestException("application not found with id " + id));
         return modelMapper.map(app, ApplicationDTO.class);
     }
 
@@ -85,21 +86,27 @@ public class ApplicationService {
     }
 
 }
-// {
-// "id": 1,
-// "applicantName": "John Doe",
-// "email": "johndoe@example.com",
-// "phone": "+255712345678",
-// "applicationDate": "2025-08-29",
-// "status": "SUBMITTED",
-// "jobPostingId": 1
-// }
-// {
-// "applicantName": "Amina Hassan",
-// "email": "amina.hassan@example.com",
-// "phone": "+255713456789",
-// "applicationDate": "2025-08-29",
-// "status": "SUBMITTED",
-// "jobPostingId": 2
-// }
 
+
+// {
+//   "firstName": "Shuab",
+//   "lastName": "Moha",
+//   "email": "moha.@example.com",
+//   "phone": "+255712345678",
+//   "address": "string",
+//   "gender": "string",
+//   "dob": "2025-09-09",
+//   "status": "SUBMITTED",
+//   "jobPostingId": 1
+// }
+//  {
+//     "firstName": "Kauthar",
+//     "lastName": "Pongwa",
+//     "email": "kau.@example.com",
+//     "phone": "+255712345128",
+//     "address": "Abla",
+//     "gender": "FEMALE",
+//     "dob": "2025-09-09",
+//     "status": "SUBMITTED",
+//     "jobPostingId": 1
+//   }

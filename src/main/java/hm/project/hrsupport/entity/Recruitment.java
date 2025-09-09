@@ -28,4 +28,8 @@ public class Recruitment extends AuditModel<String> {
     @JoinColumn(name = "applicationId", nullable = false)
     private Application application;
 
+    // Optional: Link to the employee if hired
+    @OneToOne(mappedBy = "recruitment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Employee employee;
+
 }

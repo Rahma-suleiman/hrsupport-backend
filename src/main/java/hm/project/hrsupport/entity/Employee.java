@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hm.project.hrsupport.enums.EmployeeStatusEnum;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 // import lombok.Data;
 // import lombok.EqualsAndHashCode;
@@ -46,26 +48,28 @@ public class Employee extends AuditModel<String> {
 
     // Self-reference: Many employees can report to one manager
     @ManyToOne
-    @JoinColumn(name="managerId") //FK column
-    private Employee manager; 
+    @JoinColumn(name = "managerId") // FK column
+    private Employee manager;
 
-    // Reverse side: One manager has many subordinates
-    @OneToMany(mappedBy = "manager")
-    private List<Employee> subordinates = new ArrayList<>();  
-    
     // FK
     @ManyToOne
     @JoinColumn(name = "departmentId")
     private Department department;
+    // Reverse side: One manager has many subordinates
+    @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Employee> subordinates = new ArrayList<>();
 
     // Reviews where this employee is being reviewed
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PerformanceReview> receivedReviews = new ArrayList<>();
 
     // Reviews written by this employee as reviewer
-    @OneToMany(mappedBy = "reviewer")
+    @OneToMany(mappedBy = "reviewer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PerformanceReview> writtenReviews = new ArrayList<>();
 
-    // @OneToMany
-    // private List<Payroll> payroll;
+    // Only employees hired through recruitment have a recruitment reference
+    @OneToOne
+    @JoinColumn(name="recruitmentId")
+    private Recruitment recruitment;
+
 }

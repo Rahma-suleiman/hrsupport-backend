@@ -13,15 +13,17 @@ public class RecruitmentDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
-
+    
     private String remarks;
     
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate interviewDate;
-
+    
     private RecruitmentStatusEnum status;
-
+    
     private Long applicationId;
-
+    
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long employeeId;     // link to the hired employee (optional)
 
 }

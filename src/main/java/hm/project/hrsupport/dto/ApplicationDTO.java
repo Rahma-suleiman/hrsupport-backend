@@ -1,5 +1,7 @@
 package hm.project.hrsupport.dto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,14 +14,20 @@ public class ApplicationDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
-
-    private String applicantName;
+    
+    private String firstName;
+    private String lastName;
     private String email;
     private String phone;
-
+    private String address;
+    private String gender;
+    private LocalDate dob;
+    
     // private String resumeLink;
     
-    private Date applicationDate;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private LocalDateTime applicationDate;
+
 
     private ApplicationStatusEnum status;
     // fk
