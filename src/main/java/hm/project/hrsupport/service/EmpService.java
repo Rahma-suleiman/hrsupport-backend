@@ -90,7 +90,7 @@ public class EmpService {
                 Employee employee = modelMapper.map(empDTO, Employee.class);
 
                 Employee manager = null;
-                // set Manager(optional)
+                // Handle manager (optional)
                 if (empDTO.getManagerId() != null) {
                         manager = empRepository.findById(empDTO.getManagerId())
                                         .orElseThrow(() -> new ApiRequestException(
@@ -100,18 +100,24 @@ public class EmpService {
                         manager.getSubordinates().add(employee);
                         empRepository.save(manager);
                 }
+                // Department required
                 if (empDTO.getDepartmentId() == null) {
                         throw new ApiRequestException("Department is required for every employee");
                 }
-
+                //set DepartmentId
                 Department department = deptRepository.findById(empDTO.getDepartmentId())
                                 .orElseThrow(() -> new ApiRequestException("Department not found"));
-                employee.setDepartment(department);
 
+                //set both sides of relation
+                employee.setDepartment(department); //employee has its department set
+                department.getEmployees().add(employee); //The department knows about the new employee.
+
+                //set hired data
                 employee.setHireDate(LocalDate.now());
 
                 Employee savedEmployee = empRepository.save(employee);
-
+ 
+                // map response 
                 EmpDTO empResponse = modelMapper.map(savedEmployee, EmpDTO.class);
 
                 empResponse.setManagerId(

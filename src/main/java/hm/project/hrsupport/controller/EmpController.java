@@ -12,6 +12,7 @@ import hm.project.hrsupport.dto.EmpDTO;
 import hm.project.hrsupport.dto.PerformReviewDTO;
 import hm.project.hrsupport.service.EmpService;
 
+// import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/v2/hrsupport/employee")
+// @CrossOrigin(origins = "http://localhost:5173")  // Allow React frontend (for testing purpose)
 // http://localhost:8080/api/v2/hrsupport/employee
 public class EmpController {
     

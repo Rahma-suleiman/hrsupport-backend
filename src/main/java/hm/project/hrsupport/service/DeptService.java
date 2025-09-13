@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hm.project.hrsupport.dto.DeptDTO;
+import hm.project.hrsupport.dto.EmpDTO;
 import hm.project.hrsupport.entity.Department;
+import hm.project.hrsupport.entity.Employee;
 import hm.project.hrsupport.exception.ApiRequestException;
 import hm.project.hrsupport.repository.DeptRepository;
 
@@ -21,11 +23,34 @@ public class DeptService {
     @Autowired
     private ModelMapper modelMapper;
 
+    
+    // public List<DeptDTO> getAllDepartment() {
+    //     List<Department> depts = deptRepository.findAll();
+    //     // ModelMapper here will map all fields of Department, including the full
+    //     // Employee entities
+    //     // fetched from the DB — not recommended if we only need their IDs.
+    //     return depts.stream()
+    //             .map(dept -> modelMapper.map(dept, DeptDTO.class))
+    //             .collect(Collectors.toList());
+    // }
+
     public List<DeptDTO> getAllDepartment() {
         List<Department> depts = deptRepository.findAll();
         return depts.stream()
-        .map(dept -> modelMapper.map(dept, DeptDTO.class))
-        .collect(Collectors.toList());
+                .map(dept -> {
+                    DeptDTO deptDto = modelMapper.map(dept, DeptDTO.class);
+                    // We set only employee IDs here.
+                    // Without this, ModelMapper would try to map the entire Employee entities
+                    // (all fields), but in this DTO we only want their IDs.
+                    deptDto.setEmployeeIds(dept.getEmployees() != null
+                            ? dept.getEmployees().stream()
+                                    .map(Employee::getId)
+                                    .collect(Collectors.toList())
+                            : List.of()); // empty list if no emp found
+                    return deptDto;
+                })
+                .collect(Collectors.toList());
+
     }
 
     public DeptDTO getDeptById(Long id) {
@@ -40,12 +65,11 @@ public class DeptService {
         Optional<Department> isDeptExist = deptRepository.findByName(deptDTO.getName());
         if (isDeptExist.isPresent()) {
             // throw new ApiRequestException("department exist");
-             throw new ApiRequestException("Department with name " + deptDTO.getName() + " already exists");
+            throw new ApiRequestException("Department with name " + deptDTO.getName() + " already exists");
         }
         Department saveDept = deptRepository.save(department);
         return modelMapper.map(saveDept, DeptDTO.class);
     }
-
 
     public DeptDTO editDepartment(Long id, DeptDTO deptDTO) {
         Department existingDepart = deptRepository.findById(id)
@@ -60,32 +84,45 @@ public class DeptService {
         deptRepository.deleteById(id);
     }
 
+    public List<EmpDTO> getDeptByIdEmps(Long id) {
+        Department department = deptRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException("Department not found"));
+        return department.getEmployees().stream()
+                .map(emp -> {
+                    EmpDTO empDto = modelMapper.map(emp, EmpDTO.class);
+
+                    empDto.setDepartmentId(emp.getDepartment().getId());
+                    return empDto;
+                })
+                .collect(Collectors.toList());
+    }
+
 }
 
 // {
-//     "name": "IT"
+// "name": "IT"
 // }
-//   {
-//     "name": "HR"
-//   },
-//   {
-//     "name": "Account"
-//   },
-//   {
-//     "name": "Science"
-//   },
-//   {
-//     "name": "Agriculture"
-//   },
-//   {
-//     "name": "Finance"
-//   },
-//   {
-//     "name": "Procurement"
-//   },
-//   {
-//     "name": "Production"
-//   },
-//   {
-//     "name": "Sale and Marketing"
-//   }
+// {
+// "name": "HR"
+// },
+// {
+// "name": "Account"
+// },
+// {
+// "name": "Science"
+// },
+// {
+// "name": "Agriculture"
+// },
+// {
+// "name": "Finance"
+// },
+// {
+// "name": "Procurement"
+// },
+// {
+// "name": "Production"
+// },
+// {
+// "name": "Sale and Marketing"
+// }
